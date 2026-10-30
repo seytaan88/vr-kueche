@@ -18,10 +18,10 @@
 </head>
 <body>
   <section id="ui">
-    <h2>VR-Wohnung · maßhaltigere Version</h2>
+    <h2>VR-Wohnung · Planbasierte Version 4</h2>
     <p>Diese Version orientiert sich stärker an den im Plan lesbaren Maßen: Salon ca. 4.30×6.15 m, Küche ca. 3.65×3.35 m, Terrasse ca. 1.85×5.30 m, Schlafzimmer je ca. 2.90×3.35 m, Eingang ca. 3.95×1.90 m, Bad ca. 2.45×2.05 m.</p>
     <p><b>Quest 3:</b> VR öffnen, links laufen, rechts stufenweise drehen, Trigger auf den Boden = Teleport. <b>PC:</b> WASD + Maus.</p>
-    <small>Hinweis: Dies ist weiterhin ein visuelles Entwurfsmodell, aber mit realistischerem Maßstab, Texturen, möblierter Wohnung und einer Terrasse mit Rize-inspirierter Außenansicht.</small><br>
+    <small>Hinweis: Dies ist weiterhin ein visuelles Entwurfsmodell, aber mit realistischerem Maßstab, Texturen, möblierter Wohnung und einer Terrasse mit Rize-Ausblick.</small><br>
     <button id="hide" onclick="document.getElementById('ui').classList.add('min')">Hinweise minimieren</button>
     <button onclick="document.getElementById('ui').classList.toggle('min')">Info</button>
   </section>
@@ -244,176 +244,136 @@ function rug(x,z,w,d){ box(x,.01,z,w,.02,d,'rug',{repeat:`${w/1.4} ${d/1.4}`,rou
 function plant(x,z,scale=1){ cyl(x,.18,z,.18*scale,.36*scale,'#9f9487'); for(let i=0;i<9;i++){ const a=i*Math.PI*2/9; el('sphere',{position:`${x+Math.cos(a)*.16*scale} ${0.54*scale+rnd()*0.25*scale} ${z+Math.sin(a)*.16*scale}`,radius:.16*scale,material:`color:${i%2?C.foliage:C.foliage2};roughness:1`}); } }
 function picture(x,y,z,w,h){ box(x,y,z,w+.04,h+.04,.03,'#4c3d33'); el('image',{src:'#plan',position:`${x} ${y} ${z-.018}`,width:w,height:h}); }
 
-// Exterior environment
-box(5.5,-.15,5.5,40,.3,40,'#7f8f74',{roughness:1,floor:true});
-box(14,-.12,-11,30,.18,14,'#6ea3bf',{floor:true});
-plane(10,4,-13,28,10,'landscape');
-plane(-7,4,6.5,16,10,'landscape',{rot:'0 90 0'});
-plane(19,4,7,16,10,'landscape',{rot:'0 -90 0'});
-for(let i=0;i<12;i++) plant(-2+rnd()*18,-2+rnd()*15,.9+rnd()*.8);
 
-// Floors (1 unit = 1 meter)
-const floorParquet = [
-  [2.15,3.075,4.30,6.15],   // salon
-  [6.95,3.275,2.90,3.35],   // bedroom 1
-  [9.95,3.275,2.90,3.35],   // bedroom 2
-  [7.75,5.875,4.50,1.85]    // corridor
-];
-const floorTile = [
-  [3.675,7.825,3.65,3.35],  // kitchen
-  [0.925,8.80,1.85,5.30],   // terrace
-  [7.475,8.95,3.95,1.90],   // entrance hall
-  [7.80,7.50,1.30,1.40],    // WC
-  [9.775,7.825,2.45,2.05]   // bath
-];
-for(const [x,z,w,d] of floorParquet) box(x,-.06,z,w,.12,d,'parquet',{repeat:`${w/1.0} ${d/1.0}`,floor:true});
-for(const [x,z,w,d] of floorTile) box(x,-.06,z,w,.12,d, x<2 ? 'stone' : 'tile',{repeat:`${w/1.2} ${d/1.2}`,floor:true});
-
-// Ceilings by room
-for(const [x,z,w,d] of [...floorParquet,...floorTile]) ceiling(x,z,w,d);
-
-// Exterior / perimeter walls
-wallX(0,4.30,0);
-wallZ(0,0,11.45); // left facade incl terrace edge enclosure line
-wallX(0,11.45,0,0.16,2.8,'wall');
-wallZ(11.55,1.50,8.95);
-wallX(8.55,11.55,8.95);
-wallZ(5.50,6.15,9.50); // kitchen/right side to hall
-wallX(1.85,5.50,9.50);
-wallX(0,1.85,11.45);
-wallZ(1.85,9.50,11.45);
-
-// Internal structural partitions (approx. from plan)
-wallZ(4.30,0.95,5.32); // salon to inner passage, with opening below
-wallZ(4.30,6.02,6.15);
-wallX(4.30,5.50,4.95); // short wall between salon and corridor axis
-wallZ(5.50,1.50,9.50); // start of right apartment band
-wallX(5.50,11.55,1.50); // top line before bedrooms
-wallZ(8.40,1.50,4.95); // between bedrooms
-wallX(5.50,10.00,4.95); // bedrooms to corridor
-wallZ(10.00,4.95,8.95);
-wallX(8.55,11.55,6.80); // bath top
-wallZ(8.55,6.80,8.95); // bath left
-wallX(7.15,8.45,6.80); // WC top
-wallZ(8.45,6.80,8.20); // WC right
-wallX(7.15,8.45,8.20); // WC bottom
-wallX(5.50,9.45,8.00); // hall north
-wallX(5.50,7.15,6.80); // between corridor and WC/hall
-wallZ(7.15,6.80,8.20);
-wallZ(9.45,8.00,9.90); // hall east
-
-// Skirting - key visible runs
-skirtingX(0,4.30,0.085); skirtingZ(0,0,6.15); skirtingZ(4.22,0,4.95); skirtingX(1.85,5.50,9.42); skirtingZ(11.47,1.5,8.95);
-
-// Openings / doors
-addSwingDoorX(4.30,5.20,6.15,42); // salon to corridor
-addSwingDoorX(5.82,6.74,4.95,36); // bedroom 1
-addSwingDoorX(8.82,9.74,4.95,-36); // bedroom 2
-addSwingDoorX(9.05,9.95,6.80,-42); // bathroom
-addSwingDoorX(7.38,8.18,6.80,-42); // wc
-addSwingDoorZ(5.50,7.00,7.90,-36); // kitchen from hall/corridor
-addSwingDoorX(6.20,7.10,8.00,38); // entrance to hall
-slidingDoorZ(1.85,6.75,8.55);     // terrace sliding door per plan
-
-// Windows
-windowX(1.15,2.95,0.02);          // salon top
-windowX(6.05,7.45,1.52);          // bedroom 1 top
-windowX(9.05,10.45,1.52);         // bedroom 2 top
-windowZ(0.02,2.15,3.95);          // salon left window
-windowZ(11.53,7.20,8.25,.95,2.20);// bath side/frosted-ish
-
-// Terrace railing / glazing with view
-box(0.92,0.58,11.40,1.84,1.16,.05,C.glass,{opacity:.24,roughness:.06});
-box(0.92,1.15,11.40,1.86,.05,.05,C.frame);
-box(0.92,.03,11.40,1.86,.06,.08,C.frame);
-for(const z of [6.22,7.60,9.10,10.95]) cyl(0.02,.60,z,.028,1.20,C.frame);
-box(0.02,1.15,8.78,.05,.05,5.20,C.frame);
-box(0.02,.03,8.78,.08,.06,5.20,C.frame);
-box(0.03,.58,8.78,.05,1.16,5.20,C.glass,{opacity:.20,roughness:.06});
-
-// Room furnishings - Salon
-rug(2.15,3.10,2.80,2.35);
-box(1.18,.34,2.00,2.25,.38,.96,'fabric',{repeat:'3 2'}); // sofa base
-box(1.18,.78,2.40,2.20,.55,.20,'fabric',{repeat:'3 1'}); // sofa back
-box(0.16,.61,2.02,.18,.54,.95,'fabric'); box(2.20,.61,2.02,.18,.54,.95,'fabric');
-for(let i=0;i<3;i++) box(0.58+i*.60,.57,2.02,.52,.14,.62,'#d8cec2');
-box(2.74,.40,3.28,1.10,.10,.62,'walnut'); for(const dx of [-.44,.44]) for(const dz of [-.22,.22]) box(2.74+dx,.20,3.28+dz,.05,.40,.05,C.dark);
-box(3.55,.45,1.80,.35,.90,1.70,'walnut'); box(3.55,1.36,1.80,.04,.04,1.60,C.black); // TV console and TV
-box(2.15,.76,5.05,1.70,.08,.90,'walnut'); for(const dx of [-.68,.68]) for(const dz of [-.33,.33]) box(2.15+dx,.37,5.05+dz,.06,.70,.06,C.dark);
-function diningChair(x,z,r){ const g=el('entity',{position:`${x} 0 ${z}`,rotation:`0 ${r} 0`}); const add=(xx,y,zz,w,h,d,m)=>{ const b=box(0,0,0,w,h,d,m); g.appendChild(b); b.setAttribute('position',`${xx} ${y} ${zz}`); }; add(0,.46,0,.46,.07,.46,'fabric'); add(0,.80,.19,.46,.62,.08,'fabric'); for(const a of [-.16,.16]) for(const b of [-.16,.16]) add(a,.23,b,.035,.43,.035,C.dark); }
-diningChair(1.25,5.00,90); diningChair(3.05,5.00,-90); diningChair(2.15,4.35,180); diningChair(2.15,5.70,0);
-box(3.62,1.30,5.92,.52,2.35,.48,'walnut'); // tall display/storage
-picture(4.07,1.45,2.95,.86,.62);
-plant(0.55,5.45,1.0);
-
-// Kitchen detailed
-for(let i=0;i<5;i++){
-  const x=2.25+i*0.63;
-  box(x,.44,9.05,.60,.88,.62,'cabinet');
-  box(x,.92,9.05,.62,.05,.66,'counter',{repeat:'1 1'});
-  box(x,.43,9.37,.54,.64,.02,'#c4c0ba');
+// =================== ARCHITECTURE (units = metres) ===================
+// The architectural axes follow the labelled apartment NK-14–22 in the uploaded plan.
+// Origin: living room northwest inner corner. x to right, z downward on drawing.
+// Walls are separated at openings instead of drawing closed walls through apertures.
+// Some exact thicknesses and opening offsets are approximations; plan remains authority.
+function wx(a,b,z,t=.15){if(b>a+.03)wallX(a,b,z,t)}
+function wz(x,a,b,t=.15){if(b>a+.03)wallZ(x,a,b,t)}
+function baseX(a,b,z){box((a+b)/2,.058,z,b-a,.116,.025,'#d2c9ba')}
+function baseZ(x,a,b){box(x,.058,(a+b)/2,.025,.116,b-a,'#d2c9ba')}
+function floorRect(x1,x2,z1,z2,material){let b=box((x1+x2)/2,-.075,(z1+z2)/2,x2-x1,.15,z2-z1,material,{repeat:`${(x2-x1)*1.2} ${(z2-z1)*1.2}`,floor:true});return b}
+function winX(a,b,z,sill=.85,head=2.15){
+  box((a+b)/2,sill/2,z,b-a,sill,.20,'wall');box((a+b)/2,(head+2.75)/2,z,b-a,2.75-head,.20,'wall');
+  for(const x of [a,b,(a+b)/2])box(x,(sill+head)/2,z,.045,head-sill,.10,C.frame);
+  for(const y of [sill,head])box((a+b)/2,y,z,b-a,.045,.12,C.frame);
+  box((a+b)/2,(sill+head)/2,z,b-a-.07,head-sill-.07,.012,C.glass,{opacity:.18,roughness:.04});
+  box((a+b)/2,sill-.03,z+.13,b-a+.09,.035,.29,'counter');
 }
-box(3.52,1.20,9.37,3.20,.55,.02,'counter');
-box(3.52,1.62,9.37,3.20,.20,.02,'#ded7cb');
-for(let i=0;i<4;i++) box(2.40+i*0.74,2.05,9.13,.70,.64,.38,'cabinet');
-box(2.78,.95,9.03,.74,.02,.48,C.black); for(const a of [-.18,.18]) for(const b of [-.12,.12]) el('torus',{position:`${2.78+a} .968 ${9.03+b}`,rotation:'-90 0 0',radius:.11,'radius-tubular':.004,material:'color:#909898'});
-box(4.18,.96,9.04,.60,.02,.42,'#848c8e'); cyl(4.43,1.08,8.89,.018,.28,C.steel);
-box(5.16,1.00,9.08,.64,2.02,.70,'#d8dbda'); box(5.38,1.20,9.39,.03,.40,.04,C.steel); // fridge
-box(3.68,.76,7.42,1.60,.08,.90,'walnut'); for(const dx of [-.64,.64]) for(const dz of [-.33,.33]) box(3.68+dx,.38,7.42+dz,.06,.68,.06,C.dark); diningChair(2.98,7.40,90); diningChair(4.38,7.40,-90); diningChair(3.68,6.72,180);
-box(2.20,1.35,6.34,.90,.04,.02,'#d7cec2'); box(3.84,1.35,6.34,.90,.04,.02,'#d7cec2'); // open shelves
-pendant(3.68,7.42);
-
-// Terrace
-box(0.92,.03,8.80,1.86,.02,5.24,'stone');
-box(1.00,.38,9.65,.75,.06,.75,'walnut'); for(const dx of [-.28,.28]) for(const dz of [-.28,.28]) box(1.00+dx,.19,9.65+dz,.05,.36,.05,C.dark);
-diningChair(0.48,9.65,90); diningChair(1.52,9.65,-90);
-plant(0.46,6.72,.95); plant(1.45,10.95,.95);
-
-// Bedroom 1 (master-ish)
-rug(6.92,3.45,1.55,1.05);
-box(6.95,.30,3.10,1.60,.28,2.05,'walnut');
-box(6.95,.53,3.10,1.52,.18,1.97,'#ece9e3'); box(6.95,.67,3.36,1.52,.06,1.20,'#d5cec3');
-box(6.95,.69,2.24,1.02,.15,.42,'#f2eee8');
-box(6.95,.95,1.75,1.60,.70,.08,'walnut');
-box(8.05,1.08,2.55,.58,2.16,.56,'walnut');
-box(5.86,.44,4.30,.55,.84,.44,'walnut'); box(5.86,1.10,4.30,.55,.98,.04,C.glass,{opacity:.30});
-box(5.98,1.35,1.82,.70,.04,.02,'#d7cec2');
-picture(6.20,1.55,4.88,.66,.42);
-
-// Bedroom 2
-rug(10.00,3.48,1.35,.95);
-box(10.00,.28,3.12,1.20,.28,2.00,'walnut'); box(10.00,.52,3.12,1.12,.18,1.92,'#ece9e3'); box(10.00,.65,3.30,1.12,.06,1.10,'#c9d2d9'); box(10.00,.68,2.30,.76,.15,.40,'#f3efe8'); box(10.00,.93,1.78,1.20,.66,.08,'walnut');
-box(11.02,1.08,2.65,.52,2.16,.54,'cabinet');
-box(9.15,.78,4.08,.95,.08,.55,'walnut'); for(const dx of [-.38,.38]) for(const dz of [-.20,.20]) box(9.15+dx,.40,4.08+dz,.05,.70,.05,C.dark);
-box(9.15,1.08,4.18,.70,.52,.02,'#2f3338');
-picture(10.80,1.55,4.88,.66,.42);
-
-// Corridor / entry
-box(6.30,1.20,5.08,.78,.04,.02,'#d7cec2'); picture(6.30,1.52,5.00,.66,.48);
-box(9.00,1.08,8.50,.70,2.16,.38,'walnut'); box(8.15,1.08,8.50,.80,2.16,.42,'cabinet');
-box(6.15,1.40,9.78,1.20,1.28,.04,C.white); el('image',{src:'#plan',position:'6.15 1.40 9.76',width:'1.10',height:'1.02'});
-for(const p of [[6.30,5.80],[7.70,5.80],[9.05,5.80],[6.50,8.85],[8.20,8.85]]) downlight(...p);
-
-// WC
-box(7.86,.42,7.53,.46,.82,.72,C.white); box(7.86,.57,7.48,.30,.08,.42,C.white);
-box(7.25,.82,7.90,.46,.08,.38,'counter'); box(7.25,.42,7.90,.52,.82,.42,'walnut');
-box(7.25,.92,7.88,.32,.02,.22,'#d9dddd');
-
-// Bathroom
-box(10.42,.30,7.88,.68,.60,1.25,C.white); // bathtub
-box(10.42,1.06,8.36,.68,2.02,.03,C.glass,{opacity:.16});
-box(9.10,.82,7.16,1.12,.08,.50,'counter'); box(9.10,.42,7.16,1.18,.82,.56,'walnut'); box(9.10,.94,7.12,.46,.02,.32,'#dadede');
-box(8.98,1.68,7.34,1.04,.90,.04,C.steel); box(8.98,1.68,7.36,.98,.82,.012,C.glass,{opacity:.24});
-box(9.62,.45,8.62,.38,.90,.60,C.white); // toilet
-box(10.95,2.10,7.80,.02,1.10,.80,C.glass,{opacity:.12});
-
-// Baseboards and misc accents
-box(2.15,.02,3.08,4.30,.02,6.15,'#b5987d');
-box(3.68,.02,7.82,3.65,.02,3.35,'#b5987d');
-
-// Light fixtures by room
-pendant(2.15,3.08); pendant(3.35,8.15); downlight(6.95,3.10); downlight(9.95,3.10); downlight(9.75,7.90);
-
+function winZ(x,a,b,sill=.85,head=2.15){
+  box(x,sill/2,(a+b)/2,.20,sill,b-a,'wall');box(x,(head+2.75)/2,(a+b)/2,.20,2.75-head,b-a,'wall');
+  for(const z of [a,b,(a+b)/2])box(x,(sill+head)/2,z,.1,head-sill,.045,C.frame);
+  for(const y of [sill,head])box(x,y,(a+b)/2,.12,.045,b-a,C.frame);
+  box(x,(sill+head)/2,(a+b)/2,.012,head-sill-.06,b-a-.07,C.glass,{opacity:.18,roughness:.04});
+}
+function doorwayX(a,b,z,angle=38){
+  box((a+b)/2,2.48,z,b-a,.54,.15,'wall');addSwingDoorX(a+.02,b-.02,z,angle);
+}
+function doorwayZ(x,a,b,angle=-38){
+  box(x,2.48,(a+b)/2,.15,.54,b-a,'wall');addSwingDoorZ(x,a+.02,b-.02,angle);
+}
+function glassSliderZ(x,a,b){
+  box(x,2.52,(a+b)/2,.20,.46,b-a,'wall');slidingDoorZ(x,a,b);
+  // Exposed double track + handles, height 2.25m, width 1.80m (P2 180/225)
+  box(x,.018,(a+b)/2,.17,.033,b-a,C.steel,{metal:.8});
+}
+function slab(x1,x2,z1,z2){ceiling((x1+x2)/2,(z1+z2)/2,x2-x1,z2-z1)}
+// Floor polygons: dimensions read from labels.
+floorRect(0,4.30,0,6.15,'parquet');                 // NK-20 SALON 25.58m², drawn internal ~4.30m width
+floorRect(.65,4.30,6.15,9.50,'tile');               // NK-15 kitchen 3.65 x 3.35m
+floorRect(-1.20,.65,4.20,9.50,'stone');             // NK-14 terrace 1.85 x 5.30m
+floorRect(4.40,7.30,.85,4.20,'parquet');            // NK-21 room 2.90 x 3.35m
+floorRect(7.40,10.30,.85,4.20,'parquet');           // NK-22 room 2.90 x 3.35m
+floorRect(4.35,10.30,4.20,5.45,'parquet');          // corridor horizontal
+floorRect(4.35,5.75,5.45,7.35,'parquet');           // corridor stem
+floorRect(5.55,6.85,5.45,6.85,'tile');             // WC approximate 1.81m²
+floorRect(6.95,9.40,5.45,7.50,'tile');             // bath 2.45 x 2.05m
+floorRect(4.35,8.30,7.55,9.45,'tile');             // entrance 3.95 x 1.90m
+// Door openings and fenestration now use actual gaps in wall segments.
+// Living outside: left facade x=0 starts at north, ends at terrace junction z=4.2.
+wz(0,0,1.70,.22);winZ(0,1.70,3.50);wz(0,3.50,4.22,.22);
+wx(0,.95,0,.22);winX(.95,2.75,0,.89,2.19);wx(2.75,4.30,0,.22);
+// Salon wall to sleeping corridor, upper edge shows a full-height wall and bottom passage.
+wz(4.30,0,4.88,.22);doorwayZ(4.30,4.88,5.83,-35);wz(4.30,5.83,6.15,.22);
+// Living to kitchen: open plan internal living/dining continuation (plan shows an open passage)
+wx(0,.65,6.15,.15);wx(3.80,4.30,6.15,.15);
+// Terrace sliding glazing on x=.65, aligned with lower kitchen/terrace junction.
+wz(.65,6.15,6.85,.18);glassSliderZ(.65,6.85,8.65);wz(.65,8.65,9.50,.18);
+// Terrace guardrails to exterior, no solid opaque wall hiding vista
+for(let z of [4.22,5.65,7.05,8.45,9.48]) cyl(-1.20,.58,z,.024,1.16,C.frame);
+box(-1.20,1.15,6.84,.045,.05,5.31,C.frame);
+box(-1.20,.60,6.84,.024,1.07,5.25,C.glass,{opacity:.13,roughness:.06});
+box(-.27,.58,9.51,1.87,1.16,.025,C.glass,{opacity:.15});box(-.27,1.15,9.51,1.86,.05,.04,C.frame);
+// Kitchen south boundary counter-wall and inner entrance door
+wx(.65,4.30,9.50,.18);
+wz(4.30,6.15,7.05,.20);doorwayZ(4.30,7.05,8.00,40);wz(4.30,8.00,9.45,.20);
+// Bedroom north outside wall with 140cm windows each
+wx(4.30,5.10,.85,.22);winX(5.10,6.50,.85,.85,2.16);wx(6.50,7.35,.85,.22);
+wx(7.35,8.10,.85,.22);winX(8.10,9.50,.85,.85,2.16);wx(9.50,10.35,.85,.22);
+wz(7.35,.85,4.20,.10);wz(10.35,.85,4.20,.22);
+// Bedroom-to-corridor access (K2 95/220)
+wx(4.30,4.65,4.20);doorwayX(4.65,5.60,4.20,-37);wx(5.60,7.35,4.20);
+wx(7.35,7.65,4.20);doorwayX(7.65,8.60,4.20,37);wx(8.60,10.35,4.20);
+// Hall inner geometry, narrow corridor matches the plan, no full walls through it
+wz(10.35,4.20,5.45,.20);wx(4.30,5.55,5.45,.15);
+// WC zone
+wx(5.55,5.76,5.45);doorwayX(5.76,6.56,5.45,-34);wx(6.56,6.85,5.45);
+wz(5.55,5.45,6.85);wz(6.85,5.45,6.85);wx(5.55,6.85,6.85);
+// Bath zone separate door
+wx(6.95,7.12,5.45);doorwayX(7.12,8.07,5.45,36);wx(8.07,9.40,5.45);
+wz(9.40,5.45,7.50,.20);wx(6.95,9.40,7.50,.20);wz(6.95,5.45,7.50);
+// Entrance hall: apartment main front door K1 105cm
+wz(8.30,7.55,8.02);doorwayZ(8.30,8.02,9.07,43);wz(8.30,9.07,9.45);
+wx(4.30,8.30,9.45,.20);
+// Underside/ceiling slab by interior rooms; can toggle visibility for overviews
+for(const r of [[0,4.3,0,6.15],[.65,4.30,6.15,9.5],[4.4,7.3,.85,4.2],[7.4,10.3,.85,4.2],[4.35,10.3,4.2,5.45],[4.35,8.3,7.55,9.45],[5.55,6.85,5.45,6.85],[6.95,9.4,5.45,7.50]]) slab(...r);
+// Exterior photo panels: if image cannot load, generated landscape remains visible.
+plane(-17,3.7,6.5,26,9,'landscape',{rot:'0 90 0'});
+plane(4,3.7,-19,34,10,'landscape');
+plane(17,3.7,4.5,22,9,'landscape',{rot:'0 -90 0'});
+// Verified filename from Wikimedia Commons; user may replace with another image of the actual site.
+const photo='https://commons.wikimedia.org/wiki/Special:FilePath/Rize%20Tea%20Plantation%202005-jk.jpg?width=1800';
+const photoImage=new Image();photoImage.crossOrigin='anonymous';photoImage.onload=()=>{
+  let a=el('image',{src:photo,position:'-16.97 3.7 6.5',rotation:'0 90 0',width:'25.9',height:'8.9',material:'shader:flat;side:double;transparent:true;opacity:.99'});
+};photoImage.src=photo;
+// Level cue: human-scale 90cm kitchen worktop and 2.20m doors.
+function smallStool(x,z){box(x,.45,z,.43,.08,.42,'walnut');for(const dx of [-.16,.16])for(const dz of [-.16,.16])box(x+dx,.22,z+dz,.035,.44,.035,C.dark)}
+function couch(x,z,w=2.65){box(x,.36,z,w,.34,.9,'fabric');box(x,.72,z+.32,w,.62,.23,'fabric');for(const dx of [-w/2+.1,w/2-.1])box(x+dx,.58,z,.18,.52,.88,'fabric');for(let i=0;i<3;i++)box(x+(i-1)*w/3,.55,z-.09,w/3-.06,.11,.6,'#d5c7b8')}
+function coffeetable(x,z){box(x,.42,z,1.15,.07,.60,'walnut');for(const dx of [-.45,.45])for(const dz of [-.22,.22])box(x+dx,.2,z+dz,.042,.38,.042,C.dark)}
+function dinetable(x,z,w=1.7,d=.85){box(x,.75,z,w,.08,d,'walnut');for(const dx of [-w*.41,w*.41])for(const dz of [-d*.38,d*.38])box(x+dx,.36,z+dz,.055,.68,.055,C.dark)}
+function sleep(x,z,w=1.55){box(x,.3,z,w,.35,2.03,'walnut');box(x,.55,z,w-.09,.16,1.94,'#e7e4dd');box(x,.66,z+.30,w-.10,.06,1.16,'fabric');box(x,.71,z-.67,w*.68,.13,.42,'#f1ece3');box(x,.92,z-1.05,w,.84,.10,'walnut')}
+function dresser(x,z){box(x,.54,z,1.05,1.07,.47,'cabinet');for(let y of [.19,.49,.79])box(x,.0+y,z+.25,.72,.028,.018,C.steel)}
+function kitchenBase(x,z){
+ for(let i=0;i<5;i++){const xx=x-1.21+i*.61;box(xx,.45,z,.59,.89,.61,'cabinet');box(xx,.45,z+.313,.54,.72,.014,'#c4bfb6');box(xx,.72,z+.333,.21,.015,.016,C.steel)}
+ box(x,.93,z,3.16,.06,.67,'counter');
+ box(x,1.35,z+.33,3.16,.75,.025,'tile');
+ for(let i=0;i<4;i++)box(x-1.10+i*.73,2.10,z+.20,.69,.63,.38,'cabinet');
+ box(x-.80,.974,z-.05,.74,.018,.46,C.black);
+ for(const dx of [-.18,.18])for(const dz of [-.13,.13])el('torus',{position:`${x-.80+dx} .990 ${z-.05+dz}`,rotation:'-90 0 0',radius:.108,'radius-tubular':.004,material:'color:#b1b9bc'});
+ box(x+.67,.977,z-.05,.55,.018,.42,'#7d8789');cyl(x+.88,1.10,z-.20,.019,.25,C.steel);
+ box(x+1.77,1.00,z,.68,2,.73,'#b8bec0');box(x+2.06,1.30,z+.36,.026,.35,.026,C.steel)
+}
+// Furniture follows room footprints, generous real life clearances.
+rug(2.05,2.85,2.55,2.2);couch(1.52,1.32,2.52);coffeetable(2.0,2.95);
+box(3.86,.49,1.90,.42,.92,1.83,'walnut');box(3.81,1.35,1.90,.027,.78,1.54,C.black); // TV wall
+// dining in salon near south edge
+dinetable(2.15,5.15,1.75,.85);for(const zz of [4.50,5.82])for(const xx of [1.63,2.70])smallStool(xx,zz);
+plant(.48,5.62,.8);
+kitchenBase(2.52,9.05);dinetable(2.52,7.28,1.22,.72);smallStool(1.60,7.26);smallStool(3.44,7.26);
+plant(-.77,5.06,.95);plant(-.65,9.07,.78);dinetable(-.32,7.70,.70,.65);smallStool(-.72,7.08);
+// bedroom 1 and 2
+sleep(5.88,2.65,1.55);dresser(7.02,3.70);box(4.77,1.10,1.32,.49,2.19,.54,'walnut');
+sleep(8.84,2.65,1.40);dresser(9.86,3.74);box(7.76,1.10,1.31,.48,2.19,.54,'cabinet');
+// Bath and WC
+box(8.81,.32,6.84,.72,.62,1.25,C.white);box(8.80,1.10,7.41,.02,2.15,.72,C.glass,{opacity:.16,roughness:.1});
+box(7.63,.42,5.92,1.05,.82,.48,'walnut');box(7.63,.88,5.92,1.05,.07,.52,'counter');box(7.63,.95,5.89,.48,.02,.33,C.white);
+box(8.20,.37,6.82,.39,.74,.56,C.white);
+box(6.26,.35,6.42,.39,.70,.55,C.white);box(5.90,.44,5.95,.56,.88,.39,'cabinet');box(5.90,.92,5.95,.58,.06,.42,'counter');
+// Entry shoe cabinet and big mirror
+box(5.05,.53,8.85,.95,1.05,.40,'walnut');box(5.03,1.60,9.20,.70,.90,.025,C.steel);
+for(const [x,z] of [[2.1,2.2],[2.1,5.1],[2.7,7.3],[5.84,2.55],[8.84,2.55],[7.6,4.8],[7.98,6.2],[6.0,6.0],[6.2,8.45]])downlight(x,z);
 // Navigation components
 AFRAME.registerComponent('walk-nav',{
   init(){
