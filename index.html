@@ -1,124 +1,73 @@
-<!doctype html>
-<html lang="de">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<title>Meta Quest 3 | Küche und Terrasse – Grundrissmodell</title>
-<script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
-<style>
-html,body{margin:0;background:#111;font-family:Arial,sans-serif}
-#panel{position:absolute;left:14px;top:14px;z-index:3;max-width:310px;background:rgba(16,25,33,.9);color:white;border-radius:13px;padding:15px;line-height:1.45;pointer-events:auto}
-#panel strong{font-size:17px} #panel small{color:#c9d7df}button{border:0;background:#c7e9df;border-radius:7px;padding:9px 12px;cursor:pointer;font-weight:bold}#panel p{margin:8px 0}#panel.hidden{display:none}
-@media(max-width:520px){#panel{max-width:70vw;font-size:12px;padding:10px}}
-</style>
-</head>
-<body>
-<div id="panel"><strong>Moderne Küche · Quest 3</strong><p>Modell nach hochgeladenem Plan, Maße in Metern. Küche ca. <b>3,65 × 3,35</b>, Terrasse ca. <b>1,85 × 5,30</b>.</p><p><b>Quest:</b> „VR betreten“ wählen. Linker Stick: gehen; rechter Stick: drehen. Rechter Trigger auf Boden: teleportieren. Auf Desktop: WASD + Maus.</p><small>Geometrische Näherung: Türanschläge, Brüstung, Raumhöhe und nicht sichtbare Übergänge sind angenommen. Nicht als Bauplan verwenden.</small><p><button onclick="document.getElementById('panel').classList.toggle('hidden')">Hinweis ausblenden</button></p></div>
-<a-scene background="color:#c8d5df" renderer="antialias:true; colorManagement:true; physicallyCorrectLights:true" vr-mode-ui="enabled:true" shadow="type:pcfsoft" embedded>
-<a-assets>
-<img id="plan" src="./grundriss.png">
-</a-assets>
-<a-entity id="rig" position="1.82 0 4.55" quest-move>
- <a-camera id="head" position="0 1.65 0" look-controls wasd-controls="acceleration:18" near="0.06"><a-cursor raycaster="objects:.clickable" fuse="false" material="color:white;shader:flat" geometry="primitive:ring;radiusInner:0.004;radiusOuter:0.007" position="0 0 -0.6"></a-cursor></a-camera>
- <a-entity id="leftHand" laser-controls="hand:left" tracked-controls="hand:left"></a-entity>
- <a-entity id="rightHand" laser-controls="hand:right" tracked-controls="hand:right" raycaster="objects:.floor;far:15;showLine:true;lineColor:#1aa987" teleport-floor></a-entity>
-</a-entity>
-<a-entity light="type:ambient;color:#e4edf7;intensity:0.85"></a-entity>
-<a-entity light="type:directional;color:#fff8ec;intensity:1.2;castShadow:true" position="-3 8 2"></a-entity>
-<a-entity id="model"></a-entity>
-<a-sky color="#c8d5df"></a-sky>
-</a-scene>
+<!DOCTYPE html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>Wohnung 3D · Quest 3 · Version 2</title><script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script><style>body{margin:0;background:#17191b;font:14px system-ui;color:#f5f5f5}#ui{position:fixed;top:12px;left:12px;z-index:4;width:min(345px,79vw);background:#172126ee;border:1px solid #ffffff22;border-radius:15px;padding:14px;box-shadow:0 12px 26px #0006}#ui h2{font-size:17px;margin:0 0 6px}#ui p{margin:6px 0;line-height:1.4}#ui button{background:#b5e2d6;border:0;border-radius:8px;padding:8px 11px;font-weight:700}#ui.min p,#ui.min #hide{display:none}#ui small{opacity:.75}a{color:#bcebdc}</style></head><body><section id="ui"><h2>Wohnung NK-14–22 · VR-Rundgang</h2><p>Version 2: gesamte Wohnung mit Küche, Wohn-/Essbereich, zwei Schlafzimmern, Flur, Bad, WC, Eingang und Terrasse. Schiebetür zur Terrasse, Fenster und Oberflächenmaterialien ergänzt.</p><p><b>Quest 3:</b> VR öffnen · linker Stick laufen · rechter Stick stufenweise drehen · Trigger auf Boden teleportieren. <b>PC:</b> WASD + Maus.</p><p><small>Entwurfsmodell nach NORMAL KAT.pdf, obere linke Wohnung. Echte Maße soweit lesbar, weitere Details angenähert. Nicht für Bauausführung verwenden. Materialmuster sind prozedural, nicht fotografierte Herstellertexturen.</small></p><button id="hide" onclick="document.getElementById('ui').classList.add('min')">Hinweise minimieren</button> <button onclick="document.getElementById('ui').classList.toggle('min')">Info</button></section>
+<a-scene embedded shadow="type:pcfsoft" renderer="antialias:true; colorManagement:true; physicallyCorrectLights:true; toneMapping:ACESFilmic; exposure:1.15" background="color:#b6ccdb" vr-mode-ui="enabled:true">
+<a-assets><img id="plan" src="./plan_ausschnitt.png"></a-assets>
+<a-entity id="rig" position="4.4 0 8.15" walker><a-camera id="cam" position="0 1.65 0" look-controls wasd-controls="acceleration:18" near="0.05"><a-cursor raycaster="objects:.interactive" position="0 0 -.55" geometry="primitive:ring;radiusInner:.003;radiusOuter:.006" material="shader:flat;color:white"></a-cursor></a-camera><a-entity id="lhand" laser-controls="hand:left"></a-entity><a-entity id="rhand" laser-controls="hand:right" raycaster="objects:.walkfloor;far:16;showLine:true;lineColor:#58c9a9" floorjump></a-entity></a-entity>
+<a-entity light="type:ambient;intensity:0.86;color:#e8f0ff"></a-entity><a-entity light="type:directional;intensity:1.25;color:#ffefd6;castShadow:true" position="-5 9 3"></a-entity><a-sky color="#b6ccdb"></a-sky><a-entity id="world"></a-entity></a-scene>
 <script>
-/* Ground-plan coordinates: x increases right, z increases down plan. y is up. */
-const root=document.querySelector('#model');
-const mat={wall:'#f0eee9',floor:'#d7c6ad',tile:'#c9c2b6',terrace:'#b6aaa0',wood:'#ac7855',oak:'#c9a883',white:'#f5f1e9',graphite:'#30383d',glass:'#aacbd0',steel:'#89989a',black:'#161b1c',green:'#497064',fabric:'#dad4c7'};
-function el(tag,attrs,parent=root){let a=document.createElement('a-'+tag);Object.entries(attrs).forEach(([k,v])=>a.setAttribute(k,v));parent.appendChild(a);return a}
-function box(x,y,z,w,h,d,color,extra={}){return el('box',{position:`${x} ${y} ${z}`,width:w,height:h,depth:d,material:`color:${color};roughness:${extra.roughness??0.75};metalness:${extra.metalness??0};transparent:${extra.opacity!==undefined};opacity:${extra.opacity??1}`,shadow:'cast:true;receive:true',...('class' in extra?{'class':extra.class}:{})})}
-function cyl(x,y,z,r,h,color,segments=28){return el('cylinder',{position:`${x} ${y} ${z}`,radius:r,height:h,segments,material:`color:${color};roughness:0.5`,shadow:'cast:true;receive:true'})}
-function txt(t,x,y,z,w=2,rotation='0 0 0',color='#243b40'){return el('text',{value:t,position:`${x} ${y} ${z}`,rotation,width:w,align:'center',color,side:'double',font:'https://cdn.aframe.io/fonts/Roboto-msdf.json'})}
-function wallX(a,b,z,ht=2.72){box((a+b)/2,ht/2,z,b-a,ht,.15,mat.wall)}
-function wallZ(x,a,b,ht=2.72){box(x,ht/2,(a+b)/2,.15,ht,b-a,mat.wall)}
-function door(x,z,rot=0,width=.82){let group=el('entity',{position:`${x} 0 ${z}`,rotation:`0 ${rot} 0`});boxLocal(group,width/2,1.06,0,width,2.12,.045,'#a0c3c9',.34);boxLocal(group,width-.045,1.04,.05,.03,.13,.045,'#202a30');return group}
-function boxLocal(g,x,y,z,w,h,d,color,op=1){return el('box',{position:`${x} ${y} ${z}`,width:w,height:h,depth:d,material:`color:${color};opacity:${op};transparent:${op<1};metalness:0.1;roughness:0.45`},g)}
-// Main floors: kitchen, dining continuation, hall, terrace
-box(1.825,-.09,2.675,3.65,.18,5.35,mat.floor,{class:'floor'});
-box(5.625,-.09,2.675,3.95,.18,5.35,mat.tile,{class:'floor'});
-box(-.925,-.10,2.65,1.85,.2,5.30,mat.terrace,{class:'floor'});
-for(let z=.0;z<=5.30;z+=.53)box(-.925,.008,z,1.83,.009,.012,'#8b837b');
-// perimeter north and side wall, kitchen opening to dining, kitchen / hall partition
-wallX(0,3.65,0);wallX(3.65,7.60,0);wallZ(3.65,0,2.65);wallZ(3.65,3.50,5.35);
-wallX(0,.55,5.35);wallX(3.10,3.65,5.35);wallX(3.65,7.60,5.35);
-// Terrace boundary: partition wall and glass door approx at far end of kitchen
-wallZ(0,0,2.67);wallZ(0,3.60,5.30);door(.01,2.72,18,.85);
-// slim doorframe kitchen-to-hall
-box(3.65,2.45,2.67,.17,.40,.16,mat.wall);box(3.65,2.45,3.50,.17,.40,.16,mat.wall);
-// right-hand hall open to farther rooms as cropped from source
-wallZ(7.60,0,2.60);wallZ(7.60,3.6,5.35);
-// kitchen/dining line is open (not a closed wall), slight lintel to show location
-box(1.825,2.58,3.35,3.65,.18,.13,mat.wall);
-// terrace edges: exterior frame and glass handrail; terrace left fully open visually
-box(-1.83,.58,2.65,.05,1.16,5.30,mat.glass,{opacity:.30});
-box(-1.82,1.16,2.65,.07,.06,5.30,mat.steel);
-box(-.93,.58,5.27,1.85,1.16,.045,mat.glass,{opacity:.35});
-box(-.93,1.16,5.27,1.85,.055,.06,mat.steel);
-for(let z of [0,1.76,3.52,5.27])cyl(-1.81,.58,z,.022,1.16,mat.steel);
-// Kitchen, long counter along north wall (3.65 m, 60 cm deep)
-for(let [x,w] of [[.33,.64],[1.02,.69],[1.72,.69],[2.43,.70]]){
- box(x,.43,.43,w-.016,.84,.59,mat.white);box(x,.43,.745,w-.04,.68,.015,'#d8d2c7');
- box(x,.43,.757,.15,.014,.017,mat.steel);
-}
-box(1.455,.875,.43,2.89,.055,.63,'#777e7b');
-// rear splash in light stone
-box(1.45,1.17,.084,2.89,.53,.025,'#d1ccc3');
-// four-zone induction hob at left
-box(.48,.915,.43,.71,.012,.49,mat.black);for(let x of [.29,.66])for(let z of [.28,.57]){
- let ring=el('torus',{position:`${x} .93 ${z}`,rotation:'-90 0 0',radius:.117,'radius-tubular':.004,material:'color:#6c7778'});
-}
-// sink with tap around x2.10
-box(2.13,.914,.39,.61,.01,.40,'#556267');box(2.13,.916,.39,.51,.007,.30,'#899d9c');
-cyl(2.39,1.03,.18,.018,.25,mat.steel);box(2.31,1.16,.18,.17,.025,.025,mat.steel);
-// vertical fridge at far right, drawn in plan near the east wall
-box(3.25,1.01,.43,.73,2.02,.77,'#dfe2dd');box(3.25,1.23,.831,.63,.024,.01,'#879391');box(3.56,1.38,.824,.025,.34,.035,mat.steel);
-// upper cabinet, avoiding fridge
-for(let [x,w] of [[.43,.82],[1.31,.86],[2.20,.86]]){
- box(x,2.00,.34,w-.02,.64,.42,mat.white);box(x,2.0,.56,w-.07,.56,.017,'#e9e4dc');
-}
-// decorative warm strip and a backsplash accent
-box(1.43,1.65,.56,2.83,.018,.027,'#f4cb89');
-// south dining area within the visible continuation of the plan
-box(1.83,.74,4.36,1.55,.07,.86,mat.oak);for(let x of [1.18,2.48])for(let z of [4.00,4.71])box(x,.37,z,.075,.72,.075,mat.graphite);
-for(let x of [1.29,1.83,2.37]){
- box(x,.44,3.76,.40,.08,.34,mat.fabric);box(x,.79,3.90,.40,.66,.08,mat.fabric);
-}
-for(let x of [1.30,2.35]){box(x,.44,4.96,.44,.08,.35,mat.fabric);box(x,.78,5.12,.44,.65,.09,mat.fabric)}
-// hall entry on east side, storage and entry bench
-box(6.97,1.25,.48,.98,2.5,.52,'#b9a99b');box(6.97,.50,1.10,.88,.09,.36,mat.oak);
-for(let x of [4.25,4.70,5.15])cyl(x,2.59,1.48,.058,.07,'#e6dfce');
-// terrace – keep footprint and access; modern unobtrusive outdoor furnishing
-box(-.96,.37,3.78,.75,.12,1.35,'#e3e1d9');box(-.96,.53,4.42,.75,.34,.13,'#b8b7a9');
-box(-.50,.38,2.20,.62,.05,.62,'#83796e');cyl(-.50,.18,2.20,.045,.35,mat.steel);
-for(let [x,z] of [[-1.53,.65],[-.40,.65]]){cyl(x,.21,z,.19,.38,'#d7d1c5');el('sphere',{position:`${x} .56 ${z}`,radius:.30,material:`color:${mat.green}`})}
-// ceiling edge / downlights, without blocking bird's-eye navigation
-for(let x of [.65,1.8,2.95])for(let z of [1.55,2.8]){
- cyl(x,2.695,z,.063,.018,'#fff1c9');el('entity',{position:`${x} 2.55 ${z}`,light:'type:point;intensity:.35;distance:3;color:#fff4df'});
-}
-// labels placed on ground for orientation
-// a floating reference plan in hall (can be ignored in VR)
-box(5.65,1.16,4.98,1.35,1.16,.05,'#ffffff');
-el('image',{src:'#plan',position:'5.65 1.16 4.94',width:1.25,height:.72,rotation:'0 0 0'});
-txt('GRUNDRISS (AUSSCHNITT)',5.65,1.69,4.93,1.37,'0 0 0','#4c585b');
-// controller motion, smooth walking + snap turn
-AFRAME.registerComponent('quest-move',{
- init(){this.axisL=[0,0];this.axisR=[0,0];let l=document.querySelector('#leftHand'),r=document.querySelector('#rightHand');
- l.addEventListener('thumbstickmoved',e=>this.axisL=[e.detail.x||0,e.detail.y||0]);
- r.addEventListener('thumbstickmoved',e=>{let x=e.detail.x||0;if(Math.abs(x)>0.8&&!this.turnHeld){this.el.object3D.rotation.y-=Math.sign(x)*Math.PI/6;this.turnHeld=true}if(Math.abs(x)<.35)this.turnHeld=false});
- },tick(t,dt){if(!dt)return;let [x,z]=this.axisL;if(Math.abs(x)<.17)x=0;if(Math.abs(z)<.17)z=0;if(!x&&!z)return;
- let camera=document.querySelector('#head').object3D,dir=new THREE.Vector3();camera.getWorldDirection(dir);dir.y=0;dir.normalize();let right=new THREE.Vector3(-dir.z,0,dir.x);let movement=dir.multiplyScalar(-z).add(right.multiplyScalar(x)).multiplyScalar(Math.min(dt/1000,.05)*1.65);let p=this.el.object3D.position;p.x+=movement.x;p.z+=movement.z;
- // limit Quest motion to modeled walkable footprint
- p.x=Math.max(-1.65,Math.min(7.35,p.x));p.z=Math.max(.32,Math.min(5.05,p.z));}
-});
-AFRAME.registerComponent('teleport-floor',{
- init(){this.el.addEventListener('triggerdown',()=>this.teleport())},
- teleport(){let ray=this.el.components.raycaster;if(!ray)return;ray.refreshObjects();let intersects=ray.intersections;let hit=intersects&&intersects.find(i=>i.object.el&&i.object.el.classList.contains('floor'));if(!hit)return;let pos=hit.point,rig=document.querySelector('#rig').object3D;rig.position.x=pos.x;rig.position.z=pos.z;}
-});
-</script>
-</body></html>
+const R=document.getElementById('world');let seed=7319;function rnd(){seed=(seed*1664525+1013904223)>>>0;return seed/4294967296}function texture(kind){let c=document.createElement('canvas');c.width=c.height=512;let g=c.getContext('2d');const fill=(col)=>{g.fillStyle=col;g.fillRect(0,0,512,512)};
+if(kind==='oak'||kind==='walnut'){fill(kind==='oak'?'#c9ad82':'#806046');for(let k=0;k<45;k++){let x=k*12+rnd()*9;g.fillStyle=kind==='oak'?'#9e815d':'#573e32';g.globalAlpha=.08+rnd()*.10;g.fillRect(x,0,1+rnd()*3,512)}g.globalAlpha=1;for(let i=0;i<5;i++){let y=i*103;g.fillStyle='#5b483c';g.globalAlpha=.16;g.fillRect(0,y,512,3);g.globalAlpha=1;for(let j=0;j<280;j++){let x=rnd()*512,dy=y+rnd()*100;g.fillStyle=rnd()>.5?'#fff1d2':'#67472d';g.globalAlpha=.045+rnd()*.10;g.fillRect(x,dy,10+rnd()*110,.4+rnd()*1.8)}}}
+else if(kind==='marble'||kind==='quartz'){fill(kind==='marble'?'#e9e6df':'#d4cfc7');for(let i=0;i<2800;i++){let v=Math.floor(175+rnd()*70),a=.015+rnd()*.06;g.fillStyle=`rgba(${v},${v},${v},${a})`;g.fillRect(rnd()*512,rnd()*512,1+rnd()*5,1+rnd()*5)}if(kind==='marble')for(let i=0;i<17;i++){g.strokeStyle='rgba(133,133,125,.11)';g.lineWidth=.5+rnd()*2;g.beginPath();let x=rnd()*512,y=rnd()*512;g.moveTo(x,y);g.bezierCurveTo(x+35,y+25,x-25,y+90,x+70,y+150);g.stroke()}}
+else if(kind==='concrete'||kind==='plaster'){fill(kind==='concrete'?'#b3aca1':'#e7e3d9');for(let i=0;i<16000;i++){let z=rnd()*255;g.fillStyle=`rgba(${z},${z},${z},${kind==='plaster'?.02:.035})`;g.fillRect(rnd()*512,rnd()*512,1+rnd()*3,1+rnd()*3)}}
+else if(kind==='tile'||kind==='patio'){fill(kind==='tile'?'#d2d2cd':'#aa9988');let step=kind==='tile'?128:96;for(let x=0;x<512;x+=step)for(let y=0;y<512;y+=step){g.fillStyle=`rgba(255,255,255,${rnd()*.065})`;g.fillRect(x+3,y+3,step-5,step-5)}g.strokeStyle=kind==='tile'?'#a4a6a1':'#74665a';g.lineWidth=3;for(let i=0;i<512;i+=step){g.beginPath();g.moveTo(i,0);g.lineTo(i,512);g.moveTo(0,i);g.lineTo(512,i);g.stroke()}for(let i=0;i<3000;i++){let a=Math.floor(rnd()*170);g.fillStyle=`rgba(${a},${a},${a},.025)`;g.fillRect(rnd()*512,rnd()*512,2,2)}}
+else if(kind==='fabric'){fill('#c6b9a9');for(let i=0;i<512;i+=3){g.fillStyle='rgba(255,255,255,.095)';g.fillRect(i,0,1,512);g.fillRect(0,i,512,1)}}else if(kind==='rug'){fill('#c2b5a1');for(let i=0;i<6000;i++){g.fillStyle=rnd()>.5?'#f0e6d5':'#817665';g.globalAlpha=.07;g.fillRect(rnd()*512,rnd()*512,3,6)}g.globalAlpha=1}
+return c.toDataURL('image/png')}
+const tex={};for(let t of ['oak','walnut','marble','quartz','concrete','plaster','tile','patio','fabric','rug'])tex[t]=texture(t);
+const C={wall:'#f0ede7',frame:'#454b4b',glass:'#acd8e0',dark:'#24282a',white:'#f5f3ee',steel:'#a7afb0',olive:'#73816e',brass:'#ad8b5c'};
+function entity(tag,attr={},parent=R){const e=document.createElement('a-'+tag);for(let k in attr)e.setAttribute(k,attr[k]);parent.appendChild(e);return e}
+function cube(x,y,z,w,h,d,kind='plaster',opt={}){let v=entity('box',{position:`${x} ${y} ${z}`,width:w,height:h,depth:d,shadow:'cast:true;receive:true',material:tex[kind]?`src:${tex[kind]};color:${opt.tint||'#ffffff'};roughness:${opt.roughness??.85};metalness:${opt.metal??0};repeat:${opt.repeat||'1 1'};side:double`:`color:${kind};roughness:${opt.roughness??.7};metalness:${opt.metal??0};opacity:${opt.opacity??1};transparent:${opt.opacity!==undefined&&opt.opacity<1};side:double`,...opt.floor?{'class':'walkfloor'}:{}});return v}
+function tube(x,y,z,r,h,color){return entity('cylinder',{position:`${x} ${y} ${z}`,radius:r,height:h,material:`color:${color};metalness:.65;roughness:.3`})}
+function wX(a,b,z,t=.16,h=2.7,kind='plaster'){cube((a+b)/2,h/2,z,b-a,h,t,kind)}function wZ(x,a,b,t=.16,h=2.7,kind='plaster'){cube(x,h/2,(a+b)/2,t,h,b-a,kind)}function lintX(a,b,z,top=2.7,opening=2.22){cube((a+b)/2,(opening+top)/2,z,b-a,top-opening,.17,'plaster')}
+function doorX(x,z,w=.94){cube(x,1.06,z,w,2.12,.045,'walnut',{roughness:.58});cube(x+w*.37,1.06,z+.055,.04,.13,.025,C.steel)}function doorZ(x,z,w=.9){cube(x,1.06,z,w,2.12,.048,'walnut');cube(x+w*.36,1.06,z+.06,.035,.14,.04,C.steel)}
+function openingX(a,b,z,kind='door'){cube(a,1.15,z,.065,2.3,.19,C.frame);cube(b,1.15,z,.065,2.3,.19,C.frame);lintX(a,b,z);if(kind==='swing'){let d=cube(a+.42,1.08,z+.31,.80,2.13,.045,'walnut');d.setAttribute('rotation','0 43 0')}}
+function glazedX(a,b,z,sliding=false){let h=2.25;cube((a+b)/2,h+.19,z,b-a,.36,.21,'plaster');cube(a,1.15,z,.06,2.3,.16,C.frame);cube(b,1.15,z,.06,2.3,.16,C.frame);cube((a+b)/2,.065,z,b-a,.035,.17,C.steel);cube((a+b)/2,2.26,z,b-a,.055,.15,C.steel);let mid=(a+b)/2;cube(mid,1.13,z,.035,2.18,.08,C.frame);for(let [l,r,offset] of [[a,mid,sliding?-.055:0],[mid,b,sliding?.055:0]])cube((l+r)/2,1.13,z+offset,r-l-.06,2.15,.022,C.glass,{opacity:.23,roughness:.08});for(let x of [a+.04,mid,b-.04])cube(x,1.12,z,.018,2.16,.05,C.frame);if(sliding){cube(mid-.11,1.1,z-.1,.012,.19,.04,C.steel);cube(mid+.1,1.1,z+.1,.012,.19,.04,C.steel)}}
+function glazedZ(x,a,b){ // P2 180/225: sliding glass door, two leaves and visible offset tracks
+let m=(a+b)/2;cube(x,2.43,m,.20,.48,b-a,'plaster');for(let z of [a,m,b])cube(x,1.12,z,.095,2.24,.045,C.frame);cube(x,.025,m,.18,.05,b-a,C.frame);cube(x,2.24,m,.18,.05,b-a,C.frame);
+for(let [start,end,dx] of [[a,m,-.045],[m,b,.045]]){cube(x+dx,1.14,(start+end)/2,.035,2.16,end-start-.08,C.glass,{opacity:.22,roughness:.07});for(let z of [start+.02,end-.02])cube(x+dx,1.12,z,.05,2.16,.025,C.frame)}cube(x-.09,1.08,m-.12,.028,.18,.02,C.steel);cube(x+.09,1.08,m+.12,.028,.18,.02,C.steel)}
+function windowX(a,b,z,sill=.85){cube((a+b)/2,sill/2,z,b-a,sill,.18,'plaster');cube((a+b)/2,2.52,z,b-a,.36,.18,'plaster');cube((a+b)/2,sill,z,b-a,.048,.19,C.frame);cube((a+b)/2,2.33,z,b-a,.048,.19,C.frame);for(let x of [a,b,(a+b)/2])cube(x,1.59,z,.048,1.46,.16,C.frame);cube((a+b)/2,1.59,z,.032,1.43,b-a-.07,C.glass,{opacity:.23})}
+function light(x,z){entity('entity',{position:`${x} 2.47 ${z}`,light:'type:point;intensity:.55;distance:5;color:#ffeac9'});tube(x,2.67,z,.10,.025,'#f6e8cb')}
+function plant(x,z){tube(x,.23,z,.23,.46,'#aaa092');for(let i=0;i<7;i++){let a=i*Math.PI*2/7;entity('sphere',{position:`${x+Math.sin(a)*.14} ${.59+rnd()*.28} ${z+Math.cos(a)*.14}`,radius:.19,material:`color:${i%2?'#4c7752':'#628664'};roughness:1`})}}
+function rug(x,z,w,d){cube(x,.008,z,w,.01,d,'rug',{repeat:`${w/2} ${d/2}`})}
+function table(x,z,w=1.7,d=.9){cube(x,.76,z,w,.08,d,'oak');for(let dx of [-w*.42,w*.42])for(let dz of [-d*.4,d*.4])cube(x+dx,.36,z+dz,.065,.69,.065,C.dark)}
+function chair(x,z,rot=0){let g=entity('entity',{position:`${x} 0 ${z}`,rotation:`0 ${rot} 0`});function b(xx,y,zz,w,h,d,k){let c=cube(0,0,0,w,h,d,k);g.appendChild(c);c.setAttribute('position',`${xx} ${y} ${zz}`)}b(0,.47,0,.48,.075,.47,'fabric');b(0,.8,.2,.48,.64,.1,'fabric');for(let a of [-.17,.17])for(let q of [-.16,.16])b(a,.23,q,.035,.43,.035,C.dark)}
+function sofa(x,z,w=2.3){cube(x,.32,z,w,.35,.82,'fabric');cube(x,.70,z+.36,w,.61,.19,'fabric');for(let s of [-1,1])cube(x+s*(w/2-.105),.59,z,.18,.46,.85,'fabric');for(let i=0;i<3;i++)cube(x+(i-1)*w/3,.53,z-.04,w/3-.08,.16,.57,'fabric')}
+function bed(x,z,w=1.4,d=2.05){cube(x,.32,z,w,.37,d,'walnut');cube(x,.52,z,w-.08,.16,d-.12,'#e4e3dc');cube(x,.62,z+.32,w-.08,.055,d*.62,'fabric');cube(x,.67,z-d*.32,w*.67,.14,.46,'#f2ede4');cube(x,.73,z+d*.5,w,.76,.12,'walnut')}
+function kitchen(){// back wall kitchen y 0..room
+for(let i=0;i<5;i++){let x=2.26+i*.62;cube(x,.44,9.04,.60,.87,.63,i%2?'walnut':'#d9d7cf');cube(x,.43,9.375,.53,.62,.016,'#cac7c0');cube(x,.44,9.394,.18,.015,.024,C.steel)}cube(3.48,.91,9.04,3.18,.055,.68,'quartz');cube(3.48,1.22,9.405,3.18,.52,.023,'marble');for(let i=0;i<4;i++)cube(2.3+i*.74,2.04,9.15,.71,.65,.39,'oak');cube(2.75,.955,9.02,.72,.012,.48,C.dark);for(let a of [-.18,.18])for(let b of [-.12,.12])entity('torus',{position:`${2.75+a} .968 ${9.02+b}`,rotation:'-90 0 0',radius:.11,'radius-tubular':.004,material:'color:#89908b'});cube(4.13,.963,9.04,.57,.012,.42,'#707e82');tube(4.38,1.07,8.89,.022,.30,C.steel);cube(5.28,1.02,8.97,.70,2.04,.77,'#d6d9d9');cube(5.58,1.21,9.37,.027,.36,.045,C.steel);cube(3.5,1.66,9.38,3.15,.012,.02,'#efcf94');table(3.85,7.35,1.55,.9);chair(3.16,7.30,90);chair(4.55,7.3,-90);chair(3.7,6.65,180)}
+function bath(){cube(9.44,.44,7.10,1.45,.87,.60,'marble');cube(9.44,.91,7.10,1.45,.07,.63,'quartz');cube(9.40,.93,7.07,.50,.01,.34,'#d5dad9');cube(10.43,.29,8.37,.53,.58,.70,C.white);cube(10.43,.45,8.33,.37,.07,.52,C.white);cube(10.30,.22,6.33,.63,.08,.95,C.white);cube(10.30,1.08,6.78,.63,2.16,.02,C.glass,{opacity:.18});cube(9.44,1.69,7.38,1.12,.93,.04,C.steel);cube(9.44,1.69,7.41,1.04,.85,.013,C.glass,{opacity:.35})}
+// APARTMENT: upper-left unit of the architect plan; axes: x right, z down. Approx. clear dimensions.
+// Flooring and terrace:
+const floors=[[2.15,9.0,3.65,3.35,'tile'],[2.15,3.08,4.30,6.15,'oak'],[6.03,4.86,3.58,1.52,'oak'],[7.25,2.48,2.9,3.35,'oak'],[10.2,2.48,2.9,3.35,'oak'],[7.17,8.05,2.53,2.95,'tile'],[9.86,7.22,2.48,2.15,'tile'],[5.82,8.52,1.9,1.9,'tile']];for(let [x,z,w,d,t]of floors)cube(x,-.08,z,w,.16,d,t,{repeat:`${w/1.15} ${d/1.15}`,floor:true});cube(-.91,-.085,8.74,1.82,.17,5.27,'patio',{repeat:'2 7',floor:true});
+// Outside / structural perimeter, living at top, bedrooms to east, kitchen lower left
+wX(0,4.31,0);wZ(0,0,5.85);wX(4.31,5.99,0.82);wZ(4.31,.0,3.7);wX(4.31,11.55,.80);wZ(11.56,.8,5.7);wX(4.32,11.55,4.20);
+// north windows and bedroom openings (the windows are apertures): overlap replaced with explicit glazed units
+windowX(.72,2.54,.01);windowX(5.95,7.35,.8);windowX(8.95,10.35,.8);
+// Living/dining separator from corridor, passage at x 4.3 door near z=5.3
+wZ(4.31,3.70,5.02);wZ(4.31,5.98,6.18);openingX(4.31,5.25,5.98);
+// Two bedrooms partition and corridor openings
+wZ(8.70,.8,4.2);wZ(5.8,.8,4.2);openingX(6.05,6.98,4.2);openingX(9.14,10.06,4.2);
+// corridor / bathroom lower band
+wX(5.8,7.3,5.62);wX(8.24,11.55,5.62);openingX(7.3,8.22,5.62);
+wZ(8.62,5.62,6.48);wZ(8.62,7.42,9.45);wZ(11.55,5.62,9.65);wX(8.62,11.55,9.52);openingX(8.62,9.47,6.48);
+// Guest WC, left of main bathroom
+wZ(7.95,5.62,7.00);wZ(7.95,7.82,9.30);wX(6.55,7.95,6.92);wX(6.55,7.95,9.40);openingX(6.75,7.54,6.92);
+// Kitchen and entrance wall configurations
+wX(0,.88,6.15);wX(1.78,4.31,6.15);wZ(5.82,6.15,7.47);wZ(5.82,8.47,10.70);openingX(4.88,5.82,7.47);wX(1.90,5.82,10.67);wX(5.82,8.62,9.56);wZ(6.55,9.42,10.67);wX(5.82,6.55,10.67);
+// terrace zone: sliding door P2 180/225 on x=1.90 wall aligned to kitchen (runs along z)
+wZ(1.91,6.13,7.0);wZ(1.91,8.80,11.35);glazedZ(1.91,7.0,8.80);wZ(0,6.15,11.35);wX(0,1.91,11.35);cube(-1.85,.57,8.72,.055,1.14,5.25,C.glass,{opacity:.25});cube(-1.85,1.14,8.72,.065,.065,5.25,C.steel);cube(-.93,.58,11.36,1.84,1.16,.065,C.glass,{opacity:.27});cube(-.93,1.16,11.36,1.84,.055,.055,C.steel);for(let z of [6.14,7.9,9.6,11.34])tube(-1.85,.60,z,.025,1.2,C.frame);
+// terrace access from living at x=0 left wall approx opening, high windows, glass
+// Kitchen sliding door detail extra black rails
+cube(1.91,.015,7.9,.19,.025,1.82,C.frame);cube(1.91,2.24,7.9,.19,.035,1.82,C.frame);
+// Furnish
+rug(2.0,2.9,2.9,2.7);sofa(1.45,1.35,2.36);cube(2.1,.38,3.05,1.05,.10,.60,'oak');cube(3.63,.84,2.44,.35,1.65,1.65,'walnut');table(2.33,5.04,1.75,.9);for(let x of [1.60,2.98])chair(x,5.04,x<2?90:-90);
+kitchen();bed(7.24,2.35,1.52,2.02);bed(10.17,2.4,1.45,2.0);cube(6.13,1.08,1.25,.52,2.17,.55,'walnut');cube(11.08,1.06,1.35,.59,2.12,.55,'oak');rug(7.22,3.33,1.55,1.06);rug(10.22,3.4,1.48,1.0);
+bath();cube(7.27,.35,8.24,.48,.70,.78,C.white);cube(7.26,.50,8.16,.36,.07,.50,C.white);cube(6.75,.88,8.78,.50,.07,.41,'quartz');cube(6.75,.43,8.78,.55,.82,.44,'walnut');cube(5.40,.52,9.67,.55,.9,.43,'walnut');cube(5.4,1.10,9.87,.55,1.0,.035,C.glass,{opacity:.42});
+plant(-1.15,6.67);plant(-1.42,10.88);plant(3.47,1.2);table(-.95,9.37,.76,.63);chair(-1.35,8.63,180);chair(-.61,10.12,0);
+for(let [x,z] of [[1.2,2],[3,4.8],[3.5,8.1],[7.0,2.7],[10.3,2.7],[6.2,5.1],[7.1,8],[10,7.1],[5.4,9.4]])light(x,z);
+// room labels in small floating wall plaques
+function label(text,x,z){entity('text',{value:text,position:`${x} .025 ${z}`,rotation:'-90 0 0',width:1.65,align:'center',color:'#777a72',side:'double'})}
+for(let a of [['SALON',2.25,4],['MUTFAK',3.5,8.95],['TERAS',-.97,7.3],['ODA',7.2,3.8],['ODA',10.3,3.8],['KORIDOR',6.5,5],['BANYO',9.8,6.2],['WC',7.2,7.3],['GIRIS',5.25,8]])label(...a);
+// Overlay optional plan wall poster in entrance, visible from some orientations
+cube(6.25,1.4,10.60,1.04,1.1,.04,C.white);entity('image',{src:'#plan',position:'6.25 1.40 10.56',width:1.00,height:.91});
+AFRAME.registerComponent('walker',{init(){this.left=[0,0];this.held=false;let l=document.getElementById('lhand'),r=document.getElementById('rhand');l.addEventListener('thumbstickmoved',e=>this.left=[e.detail.x||0,e.detail.y||0]);r.addEventListener('thumbstickmoved',e=>{let a=e.detail.x||0;if(Math.abs(a)>.7&&!this.held){this.el.object3D.rotation.y-=Math.sign(a)*Math.PI/6;this.held=true}if(Math.abs(a)<.3)this.held=false})},tick(_,dt){if(!dt)return;let [x,y]=this.left;if(Math.abs(x)<.15)x=0;if(Math.abs(y)<.15)y=0;if(!x&&!y)return;let cam=document.getElementById('cam').object3D,d=new THREE.Vector3();cam.getWorldDirection(d);d.y=0;d.normalize();let right=new THREE.Vector3(-d.z,0,d.x);d.multiplyScalar(-y).add(right.multiplyScalar(x)).multiplyScalar(Math.min(.045,dt/1000)*1.9);let p=this.el.object3D.position;p.x=Math.max(-1.65,Math.min(11.25,p.x+d.x));p.z=Math.max(.24,Math.min(11.22,p.z+d.z))}});
+AFRAME.registerComponent('floorjump',{init(){this.el.addEventListener('triggerdown',()=>{let ray=this.el.components.raycaster;if(!ray)return;ray.refreshObjects();let hit=ray.intersections.find(k=>k.object.el?.classList.contains('walkfloor'));if(hit){let p=document.getElementById('rig').object3D.position;p.x=hit.point.x;p.z=hit.point.z}})}});
+</script></body></html>
