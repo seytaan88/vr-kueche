@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Meta Quest 3 | Küche und Terrasse – Grundrissmodell</title>
+<script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
+<style>
+html,body{margin:0;background:#111;font-family:Arial,sans-serif}
+#panel{position:absolute;left:14px;top:14px;z-index:3;max-width:310px;background:rgba(16,25,33,.9);color:white;border-radius:13px;padding:15px;line-height:1.45;pointer-events:auto}
+#panel strong{font-size:17px} #panel small{color:#c9d7df}button{border:0;background:#c7e9df;border-radius:7px;padding:9px 12px;cursor:pointer;font-weight:bold}#panel p{margin:8px 0}#panel.hidden{display:none}
+@media(max-width:520px){#panel{max-width:70vw;font-size:12px;padding:10px}}
+</style>
+</head>
+<body>
+<div id="panel"><strong>Moderne Küche · Quest 3</strong><p>Modell nach hochgeladenem Plan, Maße in Metern. Küche ca. <b>3,65 × 3,35</b>, Terrasse ca. <b>1,85 × 5,30</b>.</p><p><b>Quest:</b> „VR betreten“ wählen. Linker Stick: gehen; rechter Stick: drehen. Rechter Trigger auf Boden: teleportieren. Auf Desktop: WASD + Maus.</p><small>Geometrische Näherung: Türanschläge, Brüstung, Raumhöhe und nicht sichtbare Übergänge sind angenommen. Nicht als Bauplan verwenden.</small><p><button onclick="document.getElementById('panel').classList.toggle('hidden')">Hinweis ausblenden</button></p></div>
+<a-scene background="color:#c8d5df" renderer="antialias:true; colorManagement:true; physicallyCorrectLights:true" vr-mode-ui="enabled:true" shadow="type:pcfsoft" embedded>
+<a-assets>
+<img id="plan" src="./grundriss.png">
+</a-assets>
+<a-entity id="rig" position="1.82 0 4.55" quest-move>
+ <a-camera id="head" position="0 1.65 0" look-controls wasd-controls="acceleration:18" near="0.06"><a-cursor raycaster="objects:.clickable" fuse="false" material="color:white;shader:flat" geometry="primitive:ring;radiusInner:0.004;radiusOuter:0.007" position="0 0 -0.6"></a-cursor></a-camera>
+ <a-entity id="leftHand" laser-controls="hand:left" tracked-controls="hand:left"></a-entity>
+ <a-entity id="rightHand" laser-controls="hand:right" tracked-controls="hand:right" raycaster="objects:.floor;far:15;showLine:true;lineColor:#1aa987" teleport-floor></a-entity>
+</a-entity>
+<a-entity light="type:ambient;color:#e4edf7;intensity:0.85"></a-entity>
+<a-entity light="type:directional;color:#fff8ec;intensity:1.2;castShadow:true" position="-3 8 2"></a-entity>
+<a-entity id="model"></a-entity>
+<a-sky color="#c8d5df"></a-sky>
+</a-scene>
+<script>
+/* Ground-plan coordinates: x increases right, z increases down plan. y is up. */
+const root=document.querySelector('#model');
+const mat={wall:'#f0eee9',floor:'#d7c6ad',tile:'#c9c2b6',terrace:'#b6aaa0',wood:'#ac7855',oak:'#c9a883',white:'#f5f1e9',graphite:'#30383d',glass:'#aacbd0',steel:'#89989a',black:'#161b1c',green:'#497064',fabric:'#dad4c7'};
+function el(tag,attrs,parent=root){let a=document.createElement('a-'+tag);Object.entries(attrs).forEach(([k,v])=>a.setAttribute(k,v));parent.appendChild(a);return a}
+function box(x,y,z,w,h,d,color,extra={}){return el('box',{position:`${x} ${y} ${z}`,width:w,height:h,depth:d,material:`color:${color};roughness:${extra.roughness??0.75};metalness:${extra.metalness??0};transparent:${extra.opacity!==undefined};opacity:${extra.opacity??1}`,shadow:'cast:true;receive:true',...('class' in extra?{'class':extra.class}:{})})}
+function cyl(x,y,z,r,h,color,segments=28){return el('cylinder',{position:`${x} ${y} ${z}`,radius:r,height:h,segments,material:`color:${color};roughness:0.5`,shadow:'cast:true;receive:true'})}
+function txt(t,x,y,z,w=2,rotation='0 0 0',color='#243b40'){return el('text',{value:t,position:`${x} ${y} ${z}`,rotation,width:w,align:'center',color,side:'double',font:'https://cdn.aframe.io/fonts/Roboto-msdf.json'})}
+function wallX(a,b,z,ht=2.72){box((a+b)/2,ht/2,z,b-a,ht,.15,mat.wall)}
+function wallZ(x,a,b,ht=2.72){box(x,ht/2,(a+b)/2,.15,ht,b-a,mat.wall)}
+function door(x,z,rot=0,width=.82){let group=el('entity',{position:`${x} 0 ${z}`,rotation:`0 ${rot} 0`});boxLocal(group,width/2,1.06,0,width,2.12,.045,'#a0c3c9',.34);boxLocal(group,width-.045,1.04,.05,.03,.13,.045,'#202a30');return group}
+function boxLocal(g,x,y,z,w,h,d,color,op=1){return el('box',{position:`${x} ${y} ${z}`,width:w,height:h,depth:d,material:`color:${color};opacity:${op};transparent:${op<1};metalness:0.1;roughness:0.45`},g)}
+// Main floors: kitchen, dining continuation, hall, terrace
+box(1.825,-.09,2.675,3.65,.18,5.35,mat.floor,{class:'floor'});
+box(5.625,-.09,2.675,3.95,.18,5.35,mat.tile,{class:'floor'});
+box(-.925,-.10,2.65,1.85,.2,5.30,mat.terrace,{class:'floor'});
+for(let z=.0;z<=5.30;z+=.53)box(-.925,.008,z,1.83,.009,.012,'#8b837b');
+// perimeter north and side wall, kitchen opening to dining, kitchen / hall partition
+wallX(0,3.65,0);wallX(3.65,7.60,0);wallZ(3.65,0,2.65);wallZ(3.65,3.50,5.35);
+wallX(0,.55,5.35);wallX(3.10,3.65,5.35);wallX(3.65,7.60,5.35);
+// Terrace boundary: partition wall and glass door approx at far end of kitchen
+wallZ(0,0,2.67);wallZ(0,3.60,5.30);door(.01,2.72,18,.85);
+// slim doorframe kitchen-to-hall
+box(3.65,2.45,2.67,.17,.40,.16,mat.wall);box(3.65,2.45,3.50,.17,.40,.16,mat.wall);
+// right-hand hall open to farther rooms as cropped from source
+wallZ(7.60,0,2.60);wallZ(7.60,3.6,5.35);
+// kitchen/dining line is open (not a closed wall), slight lintel to show location
+box(1.825,2.58,3.35,3.65,.18,.13,mat.wall);
+// terrace edges: exterior frame and glass handrail; terrace left fully open visually
+box(-1.83,.58,2.65,.05,1.16,5.30,mat.glass,{opacity:.30});
+box(-1.82,1.16,2.65,.07,.06,5.30,mat.steel);
+box(-.93,.58,5.27,1.85,1.16,.045,mat.glass,{opacity:.35});
+box(-.93,1.16,5.27,1.85,.055,.06,mat.steel);
+for(let z of [0,1.76,3.52,5.27])cyl(-1.81,.58,z,.022,1.16,mat.steel);
+// Kitchen, long counter along north wall (3.65 m, 60 cm deep)
+for(let [x,w] of [[.33,.64],[1.02,.69],[1.72,.69],[2.43,.70]]){
+ box(x,.43,.43,w-.016,.84,.59,mat.white);box(x,.43,.745,w-.04,.68,.015,'#d8d2c7');
+ box(x,.43,.757,.15,.014,.017,mat.steel);
+}
+box(1.455,.875,.43,2.89,.055,.63,'#777e7b');
+// rear splash in light stone
+box(1.45,1.17,.084,2.89,.53,.025,'#d1ccc3');
+// four-zone induction hob at left
+box(.48,.915,.43,.71,.012,.49,mat.black);for(let x of [.29,.66])for(let z of [.28,.57]){
+ let ring=el('torus',{position:`${x} .93 ${z}`,rotation:'-90 0 0',radius:.117,'radius-tubular':.004,material:'color:#6c7778'});
+}
+// sink with tap around x2.10
+box(2.13,.914,.39,.61,.01,.40,'#556267');box(2.13,.916,.39,.51,.007,.30,'#899d9c');
+cyl(2.39,1.03,.18,.018,.25,mat.steel);box(2.31,1.16,.18,.17,.025,.025,mat.steel);
+// vertical fridge at far right, drawn in plan near the east wall
+box(3.25,1.01,.43,.73,2.02,.77,'#dfe2dd');box(3.25,1.23,.831,.63,.024,.01,'#879391');box(3.56,1.38,.824,.025,.34,.035,mat.steel);
+// upper cabinet, avoiding fridge
+for(let [x,w] of [[.43,.82],[1.31,.86],[2.20,.86]]){
+ box(x,2.00,.34,w-.02,.64,.42,mat.white);box(x,2.0,.56,w-.07,.56,.017,'#e9e4dc');
+}
+// decorative warm strip and a backsplash accent
+box(1.43,1.65,.56,2.83,.018,.027,'#f4cb89');
+// south dining area within the visible continuation of the plan
+box(1.83,.74,4.36,1.55,.07,.86,mat.oak);for(let x of [1.18,2.48])for(let z of [4.00,4.71])box(x,.37,z,.075,.72,.075,mat.graphite);
+for(let x of [1.29,1.83,2.37]){
+ box(x,.44,3.76,.40,.08,.34,mat.fabric);box(x,.79,3.90,.40,.66,.08,mat.fabric);
+}
+for(let x of [1.30,2.35]){box(x,.44,4.96,.44,.08,.35,mat.fabric);box(x,.78,5.12,.44,.65,.09,mat.fabric)}
+// hall entry on east side, storage and entry bench
+box(6.97,1.25,.48,.98,2.5,.52,'#b9a99b');box(6.97,.50,1.10,.88,.09,.36,mat.oak);
+for(let x of [4.25,4.70,5.15])cyl(x,2.59,1.48,.058,.07,'#e6dfce');
+// terrace – keep footprint and access; modern unobtrusive outdoor furnishing
+box(-.96,.37,3.78,.75,.12,1.35,'#e3e1d9');box(-.96,.53,4.42,.75,.34,.13,'#b8b7a9');
+box(-.50,.38,2.20,.62,.05,.62,'#83796e');cyl(-.50,.18,2.20,.045,.35,mat.steel);
+for(let [x,z] of [[-1.53,.65],[-.40,.65]]){cyl(x,.21,z,.19,.38,'#d7d1c5');el('sphere',{position:`${x} .56 ${z}`,radius:.30,material:`color:${mat.green}`})}
+// ceiling edge / downlights, without blocking bird's-eye navigation
+for(let x of [.65,1.8,2.95])for(let z of [1.55,2.8]){
+ cyl(x,2.695,z,.063,.018,'#fff1c9');el('entity',{position:`${x} 2.55 ${z}`,light:'type:point;intensity:.35;distance:3;color:#fff4df'});
+}
+// labels placed on ground for orientation
+// a floating reference plan in hall (can be ignored in VR)
+box(5.65,1.16,4.98,1.35,1.16,.05,'#ffffff');
+el('image',{src:'#plan',position:'5.65 1.16 4.94',width:1.25,height:.72,rotation:'0 0 0'});
+txt('GRUNDRISS (AUSSCHNITT)',5.65,1.69,4.93,1.37,'0 0 0','#4c585b');
+// controller motion, smooth walking + snap turn
+AFRAME.registerComponent('quest-move',{
+ init(){this.axisL=[0,0];this.axisR=[0,0];let l=document.querySelector('#leftHand'),r=document.querySelector('#rightHand');
+ l.addEventListener('thumbstickmoved',e=>this.axisL=[e.detail.x||0,e.detail.y||0]);
+ r.addEventListener('thumbstickmoved',e=>{let x=e.detail.x||0;if(Math.abs(x)>0.8&&!this.turnHeld){this.el.object3D.rotation.y-=Math.sign(x)*Math.PI/6;this.turnHeld=true}if(Math.abs(x)<.35)this.turnHeld=false});
+ },tick(t,dt){if(!dt)return;let [x,z]=this.axisL;if(Math.abs(x)<.17)x=0;if(Math.abs(z)<.17)z=0;if(!x&&!z)return;
+ let camera=document.querySelector('#head').object3D,dir=new THREE.Vector3();camera.getWorldDirection(dir);dir.y=0;dir.normalize();let right=new THREE.Vector3(-dir.z,0,dir.x);let movement=dir.multiplyScalar(-z).add(right.multiplyScalar(x)).multiplyScalar(Math.min(dt/1000,.05)*1.65);let p=this.el.object3D.position;p.x+=movement.x;p.z+=movement.z;
+ // limit Quest motion to modeled walkable footprint
+ p.x=Math.max(-1.65,Math.min(7.35,p.x));p.z=Math.max(.32,Math.min(5.05,p.z));}
+});
+AFRAME.registerComponent('teleport-floor',{
+ init(){this.el.addEventListener('triggerdown',()=>this.teleport())},
+ teleport(){let ray=this.el.components.raycaster;if(!ray)return;ray.refreshObjects();let intersects=ray.intersections;let hit=intersects&&intersects.find(i=>i.object.el&&i.object.el.classList.contains('floor'));if(!hit)return;let pos=hit.point,rig=document.querySelector('#rig').object3D;rig.position.x=pos.x;rig.position.z=pos.z;}
+});
+</script>
+</body></html>
